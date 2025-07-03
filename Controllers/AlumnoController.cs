@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 using SafeVaultExample.Features.Commands;
 using SafeVaultExample.Features.Queries;
 using SafeVaultExample.Models;
-using System.Security.Claims;
 
 namespace SafeVaultExample.Controllers;
 
-[Authorize]
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class AlumnosController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles="Admin")]
     public async Task<ActionResult<List<Alumno>>> GetAll()
     {
         var result = await mediator.Send(new GetAllAlumnosQuery());
@@ -28,6 +28,7 @@ public class AlumnosController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<bool>> Create(CreateAlumnoCommand command)
     {
         var success = await mediator.Send(command);
@@ -39,6 +40,7 @@ public class AlumnosController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<bool>> Update(int id, UpdateAlumnoCommand command)
     {
         if (id != command.Id)
@@ -53,6 +55,7 @@ public class AlumnosController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Delete(int id)
     {
         var success = await mediator.Send(new DeleteAlumnoCommand(id));

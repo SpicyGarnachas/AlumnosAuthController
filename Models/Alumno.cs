@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-namespace SafeVaultExample.Models;
+﻿namespace SafeVaultExample.Models;
 
 public class Alumno
 {

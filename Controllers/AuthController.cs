@@ -21,7 +21,8 @@ public class AuthController(IConfiguration config) : ControllerBase
         var claims = new[]
         {
            new Claim(ClaimTypes.Name, request.Email),
-           new Claim("client_id", request.ClientId)
+           new Claim("client_id", request.ClientId),
+           new Claim(ClaimTypes.Role, "User")
        };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!));
