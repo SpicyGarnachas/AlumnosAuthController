@@ -8,11 +8,11 @@ using System.Security.Claims;
 
 namespace SafeVaultExample.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AlumnosController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<List<Alumno>>> GetAll()
     {
@@ -57,19 +57,5 @@ public class AlumnosController(IMediator mediator) : ControllerBase
     {
         var success = await mediator.Send(new DeleteAlumnoCommand(id));
         return success ? NoContent() : NotFound();
-    }
-
-    [HttpGet("check")]
-    [Authorize]
-    public IActionResult CheckClaims()
-    {
-        return Ok(new
-        {
-            Name = User.Identity?.Name,
-            Roles = User.Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value)
-                .ToList()
-        });
     }
 }
